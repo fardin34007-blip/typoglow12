@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b18">
+<title>TypoGlow — Stylish Name Generator</title>
+
+<style>
+:root{
+  --bg:#070b18;
+  --panel:#101a30;
+  --line:#263653;
+  --cyan:#38e8ff;
+  --purple:#a66bff;
+  --muted:#a8b6d0;
+  --white:#f5f7ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:var(--white);
+  background:
+    radial-gradient(ellipse at 15% 10%,#102b48 0,transparent 40%),
+    radial-gradient(ellipse at 90% 70%,#21113d 0,transparent 40%),
+    var(--bg);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+}
+.hidden{display:none!important}
+header{
+  position:sticky;
+  top:0;
+  z-index:5;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:17px 6%;
+  background:#070b18eF;
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #263653;
+}
+.logo{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+.logo span{
+  color:var(--cyan);
+  text-shadow:0 0 18px #38e8ff55;
+}
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:13px 19px;
+  font-weight:700;
+  color:white;
+  background:linear-gradient(110deg,#078edb,#8245ef);
+  transition:transform .2s,filter .2s;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.btn.secondary{
+  background:#14213a;
+  border:1px solid var(--line);
+}
+.btn.small{padding:9px 13px;font-size:13px}
+main{max-width:1100px;margin:auto;padding:35px 22px 70px}
+.hero{
+  min-height:68vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:45px;
+}
+.eyebrow{
+  display:inline-block;
+  color:var(--cyan);
+  border:1px solid #24546d;
+  background:#0b1b30;
+  padding:9px 13px;
+  border-radius:30px;
+  font-size:12px;
+  letter-spacing:1px;
+}
+h1{font-size:clamp(39px,6vw,67px);line-height:1.08;margin:22px 0}
+.gradient{
+  color:transparent;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  background-clip:text;
+  -webkit-background-clip:text;
+}
+p{line-height:1.75}
+.muted{color:var(--muted)}
+.hero p{max-width:470px}
+.hero-art{
+  position:relative;
+  width:100%;
+  max-width:390px;
+  margin:auto;
+  animation:float 4s ease-in-out infinite;
+}
+.hero-art svg{display:block;width:100%;height:auto;filter:drop-shadow(0 0 22px #38e8ff30)}
+.hero-art:before{
+  content:"";
+  position:absolute;
+  width:65%;aspect-ratio:1;
+  background:#6840ff;
+  filter:blur(90px);
+  opacity:.2;
+  left:17%;top:20%;
+  z-index:-1;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+@keyframes appear{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.panel{
+  background:linear-gradient(145deg,#111e36,#0b1325);
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:27px;
+  box-shadow:0 20px 65px #0003;
+  animation:appear .4s ease;
+}
+.auth-wrap{max-width:440px;margin:35px auto}
+h2{margin-top:0}
+.field{margin:18px 0}
+.field label{display:block;font-size:13px;margin-bottom:8px}
+.field input,.input{
+  width:100%;
+  min-width:0;
+  background:#081225;
+  border:1px solid #2b3d5e;
+  border-radius:10px;
+  color:white;
+  padding:14px;
+}
+.field input:focus,.input:focus{border-color:var(--cyan);outline:none}
+.full{width:100%}
+.text-btn{
+  background:none;border:0;color:var(--cyan);padding:8px 0
+}
+.auth-foot{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
+.note{font-size:12px;color:var(--muted);line-height:1.7}
+.error{color:#ffaaaa;font-size:13px}
+.app-top{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin:8px 0 24px
+}
+.welcome{
+  padding:27px;border:1px solid #293b61;border-radius:18px;
+  background:linear-gradient(115deg,#10304a,#24143f);
+  margin-bottom:22px;
+}
+.welcome h1{font-size:clamp(30px,5vw,45px);margin:0 0 8px}
+.welcome p{margin-bottom:0}
+.section-title{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin:32px 0 15px
+}
+.section-title h2{font-size:22px;margin:0}
+.generator-row{display:flex;gap:10px;margin-top:18px}
+.generator-row .input{flex:1}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.name-card{
+  background:#0c172b;
+  border:1px solid #243653;
+  border-radius:12px;
+  padding:15px;
+  min-width:0;
+  animation:appear .3s ease;
+}
+.name-card strong{
+  display:block;
+  overflow-wrap:anywhere;
+  margin-bottom:14px;
+}
+.card-actions{display:flex;gap:7px;flex-wrap:wrap}
+.card-actions button{
+  border:1px solid #304464;
+  border-radius:8px;
+  padding:8px 10px;
+  color:#eaf2ff;
+  background:#13233c;
+  font-size:12px;
+}
+.card-actions button:hover{border-color:var(--cyan)}
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  color:var(--muted);
+  padding:22px;
+  border:1px dashed #30415f;
+  border-radius:12px;
+}
+footer{
+  text-align:center;color:#7d8eab;
+  border-top:1px solid #202e48;
+  padding:25px;font-size:12px
+}
+@media(max-width:750px){
+  header{padding:15px 5%}
+  main{padding:25px 15px 50px}
+  .hero{grid-template-columns:1fr;gap:15px;text-align:center;padding:15px 0}
+  .hero-art{max-width:260px;grid-row:1}
+  .hero p{margin-left:auto;margin-right:auto}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .auth-wrap{margin:20px auto}
+}
+@media(max-width:430px){
+  .grid{grid-template-columns:1fr}
+  .panel{padding:20px}
+  .generator-row{flex-direction:column}
+  .logo{font-size:22px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ Typo<span>Glow</span></div>
+  <button id="headerBtn" class="btn small" onclick="headerAction()">Login</button>
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+<section id="homePage">
+  <div class="hero">
+    <div>
+      <span class="eyebrow">YOUR NAME · YOUR STYLE</span>
+      <h1>Make Your Name<br><span class="gradient">Unforgettable.</span></h1>
+      <p class="muted">
+        Create your own stylish identity. Generate unique names
+        for gaming, social media and your online profile.
+        No AI required.
+      </p>
+      <button class="btn" onclick="showAuth('loginForm')">Get Started →</button>
+      <button class="btn secondary" onclick="showAuth('signupForm')">Sign Up</button>
+    </div>
+
+    <!-- Horse artwork built into the HTML -->
+    <div class="hero-art">
+      <svg viewBox="0 0 360 400" role="img" aria-label="Stylish horse head artwork">
+        <defs>
+          <linearGradient id="horseColor" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".48" stop-color="#bdefff"/>
+            <stop offset="1" stop-color="#9270ff"/>
+          </linearGradient>
+          <linearGradient id="maneColor" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#37e7ff"/>
+            <stop offset="1" stop-color="#8d4aff"/>
+          </linearGradient>
+        </defs>
+
+        <circle cx="180" cy="195" r="145" fill="#102440" stroke="#253c65" stroke-width="1.5"/>
+        <circle cx="180" cy="195" r="126" fill="none" stroke="#38e8ff" stroke-opacity=".18" stroke-dasharray="4 9"/>
+
+        <!-- Ears -->
+        <path d="M119 105 Q91 56 108 22 Q145 49 145 91 Z" fill="url(#horseColor)"/>
+        <path d="M222 94 Q226 47 255 27 Q270 70 241 112 Z" fill="url(#horseColor)"/>
+
+        <!-- Main face -->
+        <path d="M125 91
+          Q150 62 181 72
+          Q218 69 237 104
+          Q249 139 232 174
+          L223 229
+          Q217 264 194 293
+          Q179 308 161 288
+          Q136 264 130 222
+          L116 169 Q105 123 125 91 Z"
+          fill="url(#horseColor)"/>
+
+        <!-- Forelock -->
+        <path d="M126 102 Q143 55 174 75
+          Q195 87 216 76
+          Q207 108 181 119
+          Q162 128 145 150
+          Q143 120 126 102 Z"
+          fill="#0a1325" stroke="url(#maneColor)" stroke-width="2"/>
+
+        <!-- Mane left -->
+        <path d="M125 97 Q87 119 94 174
+          Q75 209 99 257
+          Q77 246 72 221
+          Q66 281 104 307
+          Q91 276 118 248
+          Q104 219 120 187
+          Q99 147 125 97 Z"
+          fill="url(#maneColor)"/>
+
+        <path d="M115 176 Q87 220 102 261
+          Q81 294 104 330 Q105 295 131 263"
+          fill="#182b4a" stroke="#38e8ff" stroke-width="2"/>
+
+        <!-- Face markings -->
+        <path d="M169 113 Q151 154 161 199 Q164 235 178 268
+          Q192 228 195 195 Q203 149 181 112 Z"
+          fill="#0a1428"/>
+
+        <!-- Eyes -->
+        <path d="M124 153 Q141 140 154 156 Q140 163 125 159 Z" fill="#07101f"/>
+        <path d="M202 155 Q219 139 235 152 L232 160 Q216 164 202 155 Z" fill="#07101f"/>
+        <circle cx="143" cy="153" r="3" fill="#38e8ff"/>
+        <circle cx="218" cy="153" r="3" fill="#38e8ff"/>
+
+        <!-- Muzzle -->
+        <path d="M143 235 Q176 218 207 235
+          Q225 248 211 270
+          Q181 292 151 269
+          Q134 252 143 235 Z"
+          fill="#101b31" stroke="url(#maneColor)" stroke-width="2.5"/>
+        <ellipse cx="157" cy="251" rx="6" ry="8" fill="#050b18"/>
+        <ellipse cx="198" cy="251" rx="6" ry="8" fill="#050b18"/>
+        <path d="M157 274 Q177 286 198 273" fill="none" stroke="#d8f6ff" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- Neck and decorative lines -->
+        <path d="M223 202 Q248 263 271 315 Q248 298 233 279"
+          fill="none" stroke="url(#maneColor)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M122 245 Q120 292 146 329"
+          fill="none" stroke="#38e8ff" stroke-opacity=".65" stroke-width="2"/>
+        <path d="M180 322 L180 345 M170 333 L190 333"
+          stroke="#38e8ff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- AUTH PAGE -->
+<section id="authPage" class="hidden">
+  <div class="auth-wrap panel">
+
+    <div id="loginForm">
+      <h2>Welcome Back 👋</h2>
+      <p class="muted">Login to explore your stylish identity.</p>
+      <form id="loginSubmit">
+        <div class="field">
+          <label for="loginEmail">Email or username</label>
+          <input id="loginEmail" required autocomplete="username" placeholder="Enter your username">
+        </div>
+        <div class="field">
+          <label for="loginPassword">Demo password</label>
+          <input id="loginPassword" type="password" required autocomplete="off" placeholder="Any demo password">
+        </div>
+        <div style="text-align:right">
+          <button type="button" class="text-btn" onclick="showAuth('forgotForm')">Forgot Password?</button>
+        </div>
+        <p id="loginError" class="error"></p>
+        <button class="btn full" type="submit">Login →</button>
+      </form>
+      <div class="auth-foot">
+        Don't have an account?
+        <button class="text-btn" onclick="showAuth('signupForm')">Sign Up</button>
+      </div>
+      <p class="note">Demo only. Do not enter your real password. This version does not create real accounts.</p>
+    </div>
+
+    <div id="signupForm" class="hidden">
+      <h2>Create Your Space ✨</h2>
+      <p class="muted">Try the TypoGlow demo.</p>
+      <form id="signupSubmit">
+        <div class="field">
+          <label for="signupName">Your name</label>
+          <input id="signupName" required maxlength="50" placeholder="Enter your name">
+        </div>
+        <div class="field">
+          <label for="signupEmail">Email (demo only)</label>
+          <input id="signupEmail" type="email" required placeholder="you@example.com">
+        </div>
+        <button class="btn full" type="submit">Continue →</button>
+      </form>
+      <div class="auth-foot">
+        Already here?
+        <button class="text-btn" onclick="showAuth('loginForm')">Login</button>
+      </div>
+      <p class="note">No real account or email is created.</p>
+    </div>
+
+    <div id="forgotForm" class="hidden">
+      <h2>Forgot Password?</h2>
+      <p class="muted">Try the password recovery demo.</p>
+      <form id="forgotSubmit">
+        <div class="field">
+          <label for="resetEmail">Your email</label>
+          <input id="resetEmail" type="email" required placeholder="you@example.com">
+        </div>
+        <button class="btn full" type="submit">Continue</button>
+      </form>
+      <p id="resetMessage" class="muted"></p>
+      <button class="text-btn" onclick="showAuth('loginForm')">← Back to Login</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- NAME GENERATOR DASHBOARD -->
+<section id="dashboardPage" class="hidden">
+
+  <div class="app-top">
+    <div>
+      <span class="eyebrow">YOUR CREATIVE SPACE</span>
+      <p class="muted" style="margin:8px 0 0">Demo session: <span id="userName">Guest</span></p>
+    </div>
+    <button class="btn secondary small" onclick="logout()">Log Out</button>
+  </div>
+
+  <div class="welcome">
+    <h1>Find Your <span class="gradient">Identity.</span></h1>
+    <p class="muted">One name. Twelve styles. Make it yours.</p>
+  </div>
+
+  <div class="panel">
+    <h2>✦ Stylish Name Generator</h2>
+    <p class="muted">Enter a name and create 12 different styles instantly.</p>
+    <form id="generateForm" class="generator-row">
+      <input class="input" id="baseName" maxlength="30" required placeholder="e.g. Fardin, Shadow, Nova">
+      <button class="btn" type="submit">Generate 12 ✦</button>
+    </form>
+    <p class="note">Works locally in your browser. No AI or external API needed.</p>
+  </div>
+
+  <div class="section-title">
+    <h2 id="resultTitle">Your Stylish Names</h2>
+    <button class="btn secondary small" onclick="generateNames()">↻ Generate Again</button>
+  </div>
+  <div id="results" class="grid"></div>
+
+  <div class="section-title">
+    <h2>♡ Saved Names</h2>
+    <button class="text-btn" onclick="clearSaved()">Clear All</button>
+  </div>
+  <div id="savedNames" class="grid"></div>
+
+</section>
+</main>
+
+<footer>✦ TypoGlow — Create your style. Show your identity.</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let generatedNames = [];
+
+function showPage(page){
+  ["homePage","authPage","dashboardPage"].forEach(id=>{
+    $(id).classList.add("hidden");
+  });
+  $(page).classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function headerAction(){
+  if(!$("dashboardPage").classList.contains("hidden")){
+    logout();
+  }else{
+    showPage("authPage");
+    showAuth("loginForm");
+  }
+}
+
+function showAuth(form){
+  ["loginForm","signupForm","forgotForm"].forEach(id=>{
+    $(id).classList.add("hidden");
+  });
+  $(form).classList.remove("hidden");
+  $("loginError").textContent="";
+  $("resetMessage").textContent="";
+  showPage("authPage");
+}
+
+function enterDashboard(name){
+  $("userName").textContent=name;
+  $("headerBtn").textContent="Log Out";
+  showPage("dashboardPage");
+  renderSaved();
+}
+
+$("loginSubmit").addEventListener("submit",e=>{
+  e.preventDefault();
+  const email=$("loginEmail").value.trim();
+  const password=$("loginPassword").value;
+
+  if(!email || !password){
+    $("loginError").textContent="Please fill in both fields.";
+    return;
+  }
+
+  // Demo only: the password is never stored or transmitted.
+  const name=email.includes("@")?email.split("@")[0]:email;
+  enterDashboard(name);
+});
+
+$("signupSubmit").addEventListener("submit",e=>{
+  e.preventDefault();
+  enterDashboard($("signupName").value.trim());
+});
+
+$("forgotSubmit").addEventListener("submit",e=>{
+  e.preventDefault();
+  $("resetMessage").textContent=
+    "Demo only: no email was sent. Real recovery needs a secure account service.";
+});
+
+function logout(){
+  $("loginPassword").value="";
+  $("headerBtn").textContent="Login";
+  showPage("homePage");
+}
+
+function makeNames(value){
+  const base=value.replace(/[^a-zA-Z0-9]/g,"").slice(0,24);
+  if(!base)return [];
+
+  const name=base.charAt(0).toUpperCase()+base.slice(1).toLowerCase();
+  const prefixes=["Neo","Shadow","Nova","Cyber","Dark","Pixel","Ghost","Lunar","Frost","Blaze","Royal","Ultra"];
+  const suffixes=["X","OP","YT","Byte","Storm","Vibe","Prime","Flux","Wave","Pro","Zone","Verse"];
+  const styles=[
+    name+"X",
+    "Its"+name,
+    "Real"+name,
+    name+"OP",
+    "x"+name+"x",
+    name+"YT",
+    "Mr"+name,
+    name+"Plays",
+    "亗"+name+"亗",
+    "『"+name+"』",
+    "꧁"+name+"꧂",
+    "乂"+name+"乂",
+    ...prefixes.map(p=>p+name),
+    ...suffixes.map(s=>name+s)
+  ];
+
+  const unique=[...new Set(styles)];
+  for(let i=unique.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [unique[i],unique[j]]=[unique[j],unique[i]];
+  }
+  return unique.slice(0,12);
+}
+
+$("generateForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  generateNames();
+});
+
+function generateNames(){
+  const value=$("baseName").value.trim();
+  if(!value){
+    $("baseName").focus();
+    return;
+  }
+  generatedNames=makeNames(value);
+  $("resultTitle").textContent="12 Styles for "+value;
+  renderResults();
+}
+
+function renderResults(){
+  const box=$("results");
+  box.replaceChildren();
+
+  generatedNames.forEach((name,index)=>{
+    const card=document.createElement("article");
+    card.className="name-card";
+
+    const title=document.createElement("strong");
+    title.textContent=String(index+1).padStart(2,"0")+" · "+name;
+
+    const actions=document.createElement("div");
+    actions.className="card-actions";
+
+    const copy=document.createElement("button");
+    copy.textContent="Copy";
+    copy.onclick=()=>copyName(name,copy);
+
+    const save=document.createElement("button");
+    save.textContent="♡ Save";
+    save.onclick=()=>saveName(name);
+
+    actions.append(copy,save);
+    card.append(title,actions);
+    box.append(card);
+  });
+}
+
+async function copyName(name,button){
+  try{
+    await navigator.clipboard.writeText(name);
+    button.textContent="Copied ✓";
+  }catch(error){
+    const field=document.createElement("textarea");
+    field.value=name;
+    document.body.append(field);
+    field.select();
+    const ok=document.execCommand("copy");
+    field.remove();
+    button.textContent=ok?"Copied ✓":"Copy failed";
+  }
+  setTimeout(()=>button.textContent="Copy",1500);
+}
+
+function getSaved(){
+  try{
+    const data=JSON.parse(localStorage.getItem("typoglow_saved")||"[]");
+    return Array.isArray(data)?data.filter(x=>typeof x==="string"):[];
+  }catch(error){
+    return [];
+  }
+}
+
+function saveName(name){
+  const names=getSaved();
+  if(names.includes(name)){
+    alert("This name is already saved!");
+    return;
+  }
+  names.unshift(name);
+  localStorage.setItem("typoglow_saved",JSON.stringify(names.slice(0,100)));
+  renderSaved();
+}
+
+function renderSaved(){
+  const box=$("savedNames");
+  box.replaceChildren();
+  const names=getSaved();
+
+  if(!names.length){
+    const empty=document.createElement("div");
+    empty.className="empty";
+    empty.textContent="No saved names yet. Click Save on a name you like.";
+    box.append(empty);
+    return;
+  }
+
+  names.forEach(name=>{
+    const card=document.createElement("article");
+    card.className="name-card";
+
+    const title=document.createElement("strong");
+    title.textContent=name;
+
+    const actions=document.createElement("div");
+    actions.className="card-actions";
+
+    const copy=document.createElement("button");
+    copy.textContent="Copy";
+    copy.onclick=()=>copyName(name,copy);
+
+    const remove=document.createElement("button");
+    remove.textContent="Remove";
+    remove.onclick=()=>{
+      localStorage.setItem(
+        "typoglow_saved",
+        JSON.stringify(getSaved().filter(n=>n!==name))
+      );
+      renderSaved();
+    };
+
+    actions.append(copy,remove);
+    card.append(title,actions);
+    box.append(card);
+  });
+}
+
+function clearSaved(){
+  if(!getSaved().length)return;
+  if(confirm("Remove all saved names?")){
+    localStorage.removeItem("typoglow_saved");
+    renderSaved();
+  }
+}
+
+showPage("homePage");
+</script>
+</body>
+</html>
